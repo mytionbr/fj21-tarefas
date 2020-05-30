@@ -38,11 +38,11 @@ public class TarefasController {
 		model.addAttribute("tarefas",dao.lista());
 		return "tarefa/lista";
 	}
+	@ResponseBody
 	@RequestMapping("removeTarefa")
-	public String remove(Tarefa tarefa) {
+	public void remove(Tarefa tarefa) {
 		JdbcTarefaDao dao = new JdbcTarefaDao();
 		dao.remove(tarefa);
-		return "redirect:listaTarefas";
 	}
 	@RequestMapping("mostraTarefa")
 	public String mostra(Long id, Model model) {

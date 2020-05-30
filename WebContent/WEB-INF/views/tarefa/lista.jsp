@@ -19,6 +19,11 @@
 					$("#tarefa_"+id).html("Finalizado");
 					});
 						}
+				function excluirAgora(id) {
+					$.post("removeTarefa",	{'id'	:	id},	function() {
+					$("#tarefa_"+id).closest("tr").hide();;
+					});
+						}
 		</script>
 
 	<a href="novaTarefa">Criar nova tarefa</a>
@@ -49,7 +54,7 @@
 				<td><fmt:formatDate value="${tarefa.dataFinalizacao.time}"
 						pattern="dd/MM/yyyy" /></td>
 				<td><a href="mostraTarefa?id=${tarefa.id}">Alterar</a></td>
-				<td><a href="removeTarefa?id=${tarefa.id}">Remover</a></td>
+				<td id="tarefa_${tarefa.id}"><a href="#" onClick="excluirAgora(${tarefa.id})">Remover</a></td>
 			</tr>
 		</c:forEach>
 	</table>
