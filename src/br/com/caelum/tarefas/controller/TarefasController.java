@@ -59,8 +59,7 @@ public class TarefasController {
 	
 	@ResponseBody
 	@RequestMapping("finalizaTarefa")
-	public void finaliza(Long id) {
-		System.out.println("Oi");
+	public void finaliza(Long id, Model model) {
 		JdbcTarefaDao dao = new JdbcTarefaDao();
 		dao.finaliza(id);
 	}

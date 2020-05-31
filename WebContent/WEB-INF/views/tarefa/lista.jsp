@@ -44,7 +44,7 @@
 				<td>${tarefa.descricao}</td>
 
 				<c:if test="${tarefa.finalizado	eq	false}">
-					<td id="tarefa_${tarefa.id}"><a href="#"
+					<td id="tarefa_${tarefa.id }"><a href="#"
 						onClick="finalizaAgora(${tarefa.id})"> Finaliza agora! </a></td>
 				</c:if>
 				<c:if test="${tarefa.finalizado	eq	true}">
