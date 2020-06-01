@@ -8,15 +8,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import br.com.caelum.tarefas.modelo.Tarefa;
 import br.com.caelum.tarefas.ConnectionFactory;
 
+@Repository
 public class JdbcTarefaDao {
 	private final Connection connection;
 
-	public JdbcTarefaDao() {
+	@Autowired
+	public JdbcTarefaDao(DataSource dataSource) {
 		try {
-			this.connection = new ConnectionFactory().getConnection();
+			this.connection = dataSource.getConnection();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -59,8 +68,9 @@ public class JdbcTarefaDao {
 			stmt = connection.prepareStatement(sql);
 			stmt.setString(1, tarefa.getDescricao());
 			stmt.setBoolean(2, tarefa.isFinalizado());
-			stmt.setDate(3, tarefa.getDataFinalizacao() != null ? new Date(
-					tarefa.getDataFinalizacao().getTimeInMillis()) : null);
+			stmt.setDate(3,
+					tarefa.getDataFinalizacao() != null ? new Date(tarefa.getDataFinalizacao().getTimeInMillis())
+							: null);
 			stmt.setLong(4, tarefa.getId());
 			stmt.execute();
 		} catch (SQLException e) {
@@ -71,8 +81,7 @@ public class JdbcTarefaDao {
 	public List<Tarefa> lista() {
 		try {
 			List<Tarefa> tarefas = new ArrayList<Tarefa>();
-			PreparedStatement stmt = this.connection
-					.prepareStatement("select * from tarefas");
+			PreparedStatement stmt = this.connection.prepareStatement("select * from tarefas");
 
 			ResultSet rs = stmt.executeQuery();
 
@@ -97,8 +106,7 @@ public class JdbcTarefaDao {
 		}
 
 		try {
-			PreparedStatement stmt = this.connection
-					.prepareStatement("select * from tarefas where id = ?");
+			PreparedStatement stmt = this.connection.prepareStatement("select * from tarefas where id = ?");
 			stmt.setLong(1, id);
 
 			ResultSet rs = stmt.executeQuery();
